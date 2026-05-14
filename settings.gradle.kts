@@ -21,4 +21,13 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "CampusSafety"
+
 include(":app")
+
+include(":core:core-common")
+include(":core:core-ui")
+include(":core:core-network")
+
+include(":auth:data")
+include(":auth:domain")
+include(":auth:presentation")
