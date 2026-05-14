@@ -6,9 +6,8 @@ plugins {
 
 android {
     namespace = "com.caleb.campussafety"
-    compileSdk {
-        version = release(36)
-    }
+
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.caleb.campussafety"
@@ -23,19 +22,23 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }

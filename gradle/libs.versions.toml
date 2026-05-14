@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "8.9.2"
 kotlin = "2.0.21"
 coreKtx = "1.18.0"
 junit = "4.13.2"
@@ -17,7 +17,7 @@ playServicesLocation = "21.3.0"
 room = "2.7.1"
 datastore = "1.1.4"
 kotlinxSerializationJson = "1.8.1"
-ksp = "2.0.21-1.0.29"
+ksp = "2.3.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +74,6 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-google-services = { id = "com.google.gms.google-services", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
