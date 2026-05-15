@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
 
     implementation(project(":auth:presentation"))
     implementation(project(":auth:data"))
