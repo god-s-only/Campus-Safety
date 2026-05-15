@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 rootProject.name = "CampusSafety"
 
 include(":app")
+include(":core:common")
