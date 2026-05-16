@@ -1,7 +1,7 @@
 package com.caleb.campussafety.auth.presentation.login
 
 sealed class LoginAction {
-    object NavigateToHome : LoginAction()
+    data class NavigateToHome(val isSecurityOfficer: Boolean) : LoginAction()
     object NavigateToRegister : LoginAction()
     data class ShowError(val message: String) : LoginAction()
 }

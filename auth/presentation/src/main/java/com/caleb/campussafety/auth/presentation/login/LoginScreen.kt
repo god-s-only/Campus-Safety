@@ -27,13 +27,13 @@ fun LoginScreen(
     state: LoginState,
     actions: Flow<LoginAction>,
     onEvent: (LoginEvent) -> Unit,
-    onNavigateToHome: () -> Unit,
+    onNavigateToHome: (isSecurityOfficer: Boolean) -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         actions.collect { action ->
             when (action) {
-                is LoginAction.NavigateToHome -> onNavigateToHome()
+                is LoginAction.NavigateToHome -> onNavigateToHome(action.isSecurityOfficer)
                 is LoginAction.NavigateToRegister -> onNavigateToRegister()
                 is LoginAction.ShowError -> Unit
             }

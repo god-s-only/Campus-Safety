@@ -48,7 +48,12 @@ class LoginViewModel @Inject constructor(
             )) {
                 is AuthResult.Success -> {
                     _state.update { it.copy(isLoading = false) }
-                    _actions.send(LoginAction.NavigateToHome)
+                    _actions.send(
+                        LoginAction.NavigateToHome(
+                            isSecurityOfficer = result.data.role ==
+                                    com.caleb.campussafety.auth.domain.model.UserRole.SECURITY
+                        )
+                    )
                 }
                 is AuthResult.Error -> {
                     _state.update {

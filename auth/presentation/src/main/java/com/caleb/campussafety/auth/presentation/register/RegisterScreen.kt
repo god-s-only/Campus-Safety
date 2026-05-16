@@ -27,13 +27,13 @@ fun RegisterScreen(
     state: RegisterState,
     actions: Flow<RegisterAction>,
     onEvent: (RegisterEvent) -> Unit,
-    onNavigateToHome: () -> Unit,
+    onNavigateToHome: (isSecurityOfficer: Boolean) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         actions.collect { action ->
             when (action) {
-                is RegisterAction.NavigateToHome -> onNavigateToHome()
+                is RegisterAction.NavigateToHome -> onNavigateToHome(action.isSecurityOfficer)
                 is RegisterAction.NavigateToLogin -> onNavigateToLogin()
                 is RegisterAction.ShowError -> Unit
             }

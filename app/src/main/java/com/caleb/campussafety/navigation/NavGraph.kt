@@ -5,12 +5,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.caleb.campussafety.auth.presentation.login.LoginScreen
 import com.caleb.campussafety.auth.presentation.login.LoginViewModel
 import com.caleb.campussafety.auth.presentation.register.RegisterScreen
 import com.caleb.campussafety.auth.presentation.register.RegisterViewModel
+import com.caleb.campussafety.dashboard.presentation.dashboard.DashboardScreen
+import com.caleb.campussafety.dashboard.presentation.dashboard.DashboardViewModel
 import com.caleb.campussafety.report.presentation.history.HistoryScreen
 import com.caleb.campussafety.report.presentation.history.HistoryViewModel
 import com.caleb.campussafety.report.presentation.home.StudentHomeScreen
@@ -22,6 +26,7 @@ sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
     object StudentHome : Screen("student_home")
+    object SecurityDashboard : Screen("security_dashboard")
     object Report : Screen("report")
     object History : Screen("history")
     object IncidentDetail : Screen("incident_detail/{incidentId}") {
@@ -30,10 +35,13 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    startDestination: String = Screen.Login.route
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = startDestination
     ) {
         composable(Screen.Login.route) {
             val viewModel: LoginViewModel = hiltViewModel()
@@ -42,8 +50,12 @@ fun NavGraph(navController: NavHostController) {
                 state = state,
                 actions = viewModel.actions,
                 onEvent = viewModel::onEvent,
-                onNavigateToHome = {
-                    navController.navigate(Screen.StudentHome.route) {
+                onNavigateToHome = { isSecurityOfficer ->
+                    val destination = if (isSecurityOfficer)
+                        Screen.SecurityDashboard.route
+                    else
+                        Screen.StudentHome.route
+                    navController.navigate(destination) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
@@ -60,8 +72,12 @@ fun NavGraph(navController: NavHostController) {
                 state = state,
                 actions = viewModel.actions,
                 onEvent = viewModel::onEvent,
-                onNavigateToHome = {
-                    navController.navigate(Screen.StudentHome.route) {
+                onNavigateToHome = { isSecurityOfficer ->
+                    val destination = if (isSecurityOfficer)
+                        Screen.SecurityDashboard.route
+                    else
+                        Screen.StudentHome.route
+                    navController.navigate(destination) {
                         popUpTo(Screen.Register.route) { inclusive = true }
                     }
                 },
@@ -92,6 +108,21 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
+        composable(Screen.SecurityDashboard.route) {
+            val viewModel: DashboardViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsState()
+            DashboardScreen(
+                state = state,
+                actions = viewModel.actions,
+                onEvent = viewModel::onEvent,
+                onNavigateToIncidentDetail = { incidentId ->
+                    navController.navigate(
+                        Screen.IncidentDetail.createRoute(incidentId)
+                    )
+                }
+            )
+        }
+
         composable(Screen.Report.route) {
             val viewModel: ReportViewModel = hiltViewModel()
             val state by viewModel.state.collectAsState()
@@ -107,6 +138,7 @@ fun NavGraph(navController: NavHostController) {
                 }
             )
         }
+
         composable(Screen.History.route) {
             val viewModel: HistoryViewModel = hiltViewModel()
             val state by viewModel.state.collectAsState()
@@ -124,5 +156,6 @@ fun NavGraph(navController: NavHostController) {
                 }
             )
         }
+
     }
 }
