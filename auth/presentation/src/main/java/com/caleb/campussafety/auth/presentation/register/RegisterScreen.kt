@@ -15,10 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.caleb.campussafety.auth.domain.model.UserRole
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun RegisterScreen(
@@ -390,4 +392,10 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(48.dp))
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Dfeault() {
+    RegisterScreen(RegisterState(), flowOf(), {}, {}, {})
 }

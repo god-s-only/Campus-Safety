@@ -16,9 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun LoginScreen(
@@ -223,7 +225,9 @@ fun LoginScreen(
             ) {
                 OutlinedButton(
                     onClick = {},
-                    modifier = Modifier.weight(1f).height(56.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -238,7 +242,9 @@ fun LoginScreen(
                 }
                 OutlinedButton(
                     onClick = {},
-                    modifier = Modifier.weight(1f).height(56.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -279,4 +285,10 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(48.dp))
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Default() {
+    LoginScreen(LoginState(), flowOf(), {}, {}, {})
 }
