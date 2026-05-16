@@ -36,6 +36,7 @@
             <option value="$PROJECT_DIR$/report" />
             <option value="$PROJECT_DIR$/report/data" />
             <option value="$PROJECT_DIR$/report/domain" />
+            <option value="$PROJECT_DIR$/report/presentation" />
           </set>
         </option>
       </GradleProjectSettings>
