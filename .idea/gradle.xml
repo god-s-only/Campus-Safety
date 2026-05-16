@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/report" />
+            <option value="$PROJECT_DIR$/report/data" />
             <option value="$PROJECT_DIR$/report/domain" />
           </set>
         </option>
