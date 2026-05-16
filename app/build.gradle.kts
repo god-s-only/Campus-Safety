@@ -60,6 +60,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     implementation(project(":auth:presentation"))
     implementation(project(":auth:data"))
