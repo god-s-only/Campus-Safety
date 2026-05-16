@@ -11,11 +11,14 @@ import com.caleb.campussafety.auth.presentation.login.LoginScreen
 import com.caleb.campussafety.auth.presentation.login.LoginViewModel
 import com.caleb.campussafety.auth.presentation.register.RegisterScreen
 import com.caleb.campussafety.auth.presentation.register.RegisterViewModel
+import com.caleb.campussafety.report.presentation.report.ReportScreen
+import com.caleb.campussafety.report.presentation.report.ReportViewModel
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
     object Home : Screen("home")
+    object Report : Screen("report")
 }
 
 @Composable
@@ -55,6 +58,23 @@ fun NavGraph(navController: NavHostController) {
                     }
                 },
                 onNavigateToLogin = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+
+        composable(Screen.Report.route) {
+            val viewModel: ReportViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsState()
+            ReportScreen(
+                state = state,
+                actions = viewModel.actions,
+                onEvent = viewModel::onEvent,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onReportSubmitted = {
                     navController.popBackStack()
                 }
             )
