@@ -11,6 +11,8 @@ import com.caleb.campussafety.auth.presentation.login.LoginScreen
 import com.caleb.campussafety.auth.presentation.login.LoginViewModel
 import com.caleb.campussafety.auth.presentation.register.RegisterScreen
 import com.caleb.campussafety.auth.presentation.register.RegisterViewModel
+import com.caleb.campussafety.report.presentation.history.HistoryScreen
+import com.caleb.campussafety.report.presentation.history.HistoryViewModel
 import com.caleb.campussafety.report.presentation.home.StudentHomeScreen
 import com.caleb.campussafety.report.presentation.home.StudentHomeViewModel
 import com.caleb.campussafety.report.presentation.report.ReportScreen
@@ -102,6 +104,23 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onReportSubmitted = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.History.route) {
+            val viewModel: HistoryViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsState()
+            HistoryScreen(
+                state = state,
+                actions = viewModel.actions,
+                onEvent = viewModel::onEvent,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToIncidentDetail = { incidentId ->
+                    navController.navigate(
+                        Screen.IncidentDetail.createRoute(incidentId)
+                    )
                 }
             )
         }
