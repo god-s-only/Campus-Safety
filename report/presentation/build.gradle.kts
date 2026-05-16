@@ -46,9 +46,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
 
 
     implementation(project(":report:domain"))
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
+    implementation(project(":auth:domain"))
 }
