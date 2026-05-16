@@ -67,4 +67,5 @@ dependencies {
     implementation(project(":report:presentation"))
     implementation(project(":report:data"))
     implementation(project(":report:domain"))
+    implementation(project(":dashboard:presentation"))
 }
