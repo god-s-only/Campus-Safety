@@ -23,6 +23,8 @@ import com.caleb.campussafety.report.presentation.home.StudentHomeScreen
 import com.caleb.campussafety.report.presentation.home.StudentHomeViewModel
 import com.caleb.campussafety.report.presentation.report.ReportScreen
 import com.caleb.campussafety.report.presentation.report.ReportViewModel
+import com.caleb.campussafety.splash.SplashScreen
+import com.caleb.campussafety.splash.SplashViewModel
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
@@ -34,6 +36,7 @@ sealed class Screen(val route: String) {
     object IncidentDetail : Screen("incident_detail/{incidentId}") {
         fun createRoute(incidentId: String) = "incident_detail/$incidentId"
     }
+    object Splash : Screen("splash")
 }
 
 @Composable
@@ -43,7 +46,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = Screen.Splash.route
     ) {
         composable(Screen.Login.route) {
             val viewModel: LoginViewModel = hiltViewModel()
@@ -173,6 +176,26 @@ fun NavGraph(
                 onEvent = viewModel::onEvent,
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Splash.route) {
+            val viewModel: SplashViewModel = hiltViewModel()
+            SplashScreen(
+                actions = viewModel.actions,
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                },
+                onNavigateToHome = { isSecurityOfficer ->
+                    val destination = if (isSecurityOfficer)
+                        Screen.SecurityDashboard.route
+                    else
+                        Screen.StudentHome.route
+                    navController.navigate(destination) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
                 }
             )
         }
