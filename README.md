@@ -221,7 +221,3 @@ service cloud.firestore {
 
 ---
 
-
-## License
-
-This project is submitted for academic purposes. All rights reserved by the author.
