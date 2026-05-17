@@ -3,13 +3,11 @@ package com.caleb.campussafety.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caleb.campussafety.auth.domain.model.UserRole
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.caleb.campussafety.auth.domain.usecase.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 sealed class SplashAction {
@@ -19,8 +17,7 @@ sealed class SplashAction {
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
     private val _actions = Channel<SplashAction>()
@@ -32,22 +29,15 @@ class SplashViewModel @Inject constructor(
 
     private fun checkSession() {
         viewModelScope.launch {
-            val currentUser = firebaseAuth.currentUser
-            if (currentUser == null) {
+            val user = getCurrentUserUseCase()
+            if (user == null) {
                 _actions.send(SplashAction.NavigateToLogin)
-                return@launch
-            }
-            try {
-                val doc = firestore
-                    .collection("users")
-                    .document(currentUser.uid)
-                    .get()
-                    .await()
-                val role = doc.getString("role")
-                val isSecurityOfficer = role == UserRole.SECURITY.name
-                _actions.send(SplashAction.NavigateToHome(isSecurityOfficer))
-            } catch (e: Exception) {
-                _actions.send(SplashAction.NavigateToLogin)
+            } else {
+                _actions.send(
+                    SplashAction.NavigateToHome(
+                        isSecurityOfficer = user.role == UserRole.SECURITY
+                    )
+                )
             }
         }
     }
