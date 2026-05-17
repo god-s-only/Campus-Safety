@@ -8,7 +8,7 @@ Built as a final year project at Bingham University, Karu, Nasarawa State — by
 
 ## Screenshots
 
-> Add screenshots here after first build
+> Screenshots soon
 
 ---
 
