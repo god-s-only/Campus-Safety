@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caleb.campussafety.auth.domain.model.UserRole
+import com.caleb.campussafety.auth.domain.usecase.GetUserRoleUseCase
 import com.caleb.campussafety.report.domain.model.IncidentStatus
 import com.caleb.campussafety.report.domain.repository.ReportRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -22,8 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IncidentDetailViewModel @Inject constructor(
     private val reportRepository: ReportRepository,
-    private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore,
+    private val getUserRoleUseCase: GetUserRoleUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -67,21 +67,9 @@ class IncidentDetailViewModel @Inject constructor(
 
     private fun checkUserRole() {
         viewModelScope.launch {
-            try {
-                val uid = firebaseAuth.currentUser?.uid ?: return@launch
-                val doc = firestore
-                    .collection("users")
-                    .document(uid)
-                    .get()
-                    .await()
-                val role = doc.getString("role")
-                _state.update {
-                    it.copy(
-                        isSecurityOfficer = role == UserRole.SECURITY.name
-                    )
-                }
-            } catch (e: Exception) {
-                // default to student view
+            val role = getUserRoleUseCase()
+            _state.update {
+                it.copy(isSecurityOfficer = role == UserRole.SECURITY)
             }
         }
     }
