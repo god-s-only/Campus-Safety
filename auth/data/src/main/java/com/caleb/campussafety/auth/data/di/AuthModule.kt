@@ -2,6 +2,7 @@ package com.caleb.campussafety.auth.data.di
 
 import com.caleb.campussafety.auth.data.repository.AuthRepositoryImpl
 import com.caleb.campussafety.auth.domain.repository.AuthRepository
+import com.caleb.campussafety.auth.domain.usecase.GetUserRoleUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -28,4 +29,10 @@ object AuthModule {
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore
     ): AuthRepository = AuthRepositoryImpl(firebaseAuth, firestore)
+
+    @Provides
+    @Singleton
+    fun provideGetUserRoleUseCase(
+        repository: AuthRepository
+    ): GetUserRoleUseCase = GetUserRoleUseCase(repository)
 }
