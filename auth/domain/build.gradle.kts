@@ -26,9 +26,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(project(":core:common"))
-    implementation(project(":auth:data"))
 }
