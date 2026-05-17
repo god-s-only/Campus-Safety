@@ -12,12 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.caleb.campussafety.report.domain.model.Incident
 import com.caleb.campussafety.report.domain.model.IncidentCategory
 import com.caleb.campussafety.report.domain.model.IncidentStatus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -381,4 +383,10 @@ fun IncidentCard(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Default() {
+    StudentHomeScreen(StudentHomeState(), flowOf(), {}, {}, {}) { }
 }
