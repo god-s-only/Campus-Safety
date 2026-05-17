@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.caleb.campussafety"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.caleb.campussafety"

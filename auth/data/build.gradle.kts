@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.caleb.campussafety.auth.data"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26

@@ -4,8 +4,9 @@ import com.caleb.campussafety.auth.domain.model.AuthResult
 import com.caleb.campussafety.auth.domain.model.User
 import com.caleb.campussafety.auth.domain.model.UserRole
 import com.caleb.campussafety.auth.domain.repository.AuthRepository
+import javax.inject.Inject
 
-class RegisterUseCase(
+class RegisterUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
     suspend operator fun invoke(
