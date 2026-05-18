@@ -28,13 +28,15 @@ fun DashboardScreen(
     state: DashboardState,
     actions: Flow<DashboardAction>,
     onEvent: (DashboardEvent) -> Unit,
-    onNavigateToIncidentDetail: (String) -> Unit
+    onNavigateToIncidentDetail: (String) -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         actions.collect { action ->
             when (action) {
                 is DashboardAction.NavigateToIncidentDetail ->
                     onNavigateToIncidentDetail(action.incidentId)
+                is DashboardAction.NavigateToLogin -> onNavigateToLogin()
             }
         }
     }
@@ -72,7 +74,15 @@ fun DashboardScreen(
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    IconButton(onClick = { onEvent(DashboardEvent.OnLogoutClick) }) {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
                 }
             )
         }
