@@ -105,6 +105,11 @@ fun NavGraph(
                 onNavigateToHistory = {
                     navController.navigate(Screen.History.route)
                 },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
                 onNavigateToIncidentDetail = { incidentId ->
                     navController.navigate(
                         Screen.IncidentDetail.createRoute(incidentId)
@@ -124,6 +129,11 @@ fun NavGraph(
                     navController.navigate(
                         Screen.IncidentDetail.createRoute(incidentId)
                     )
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
             )
         }
