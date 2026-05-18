@@ -2,8 +2,10 @@ package com.caleb.campussafety.dashboard.presentation.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.caleb.campussafety.auth.domain.usecase.LogoutUseCase
 import com.caleb.campussafety.report.domain.model.Incident
 import com.caleb.campussafety.report.domain.model.IncidentStatus
+import com.caleb.campussafety.report.domain.repository.ReportRepository
 import com.caleb.campussafety.report.domain.usecase.GetIncidentsUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,12 +17,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.caleb.campussafety.report.domain.repository.ReportRepository
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getIncidentsUseCase: GetIncidentsUseCase,
     private val reportRepository: ReportRepository,
+    private val logoutUseCase: LogoutUseCase,
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
@@ -91,6 +93,12 @@ class DashboardViewModel @Inject constructor(
                     _actions.send(
                         DashboardAction.NavigateToIncidentDetail(event.incidentId)
                     )
+                }
+            }
+            is DashboardEvent.OnLogoutClick -> {
+                viewModelScope.launch {
+                    logoutUseCase()
+                    _actions.send(DashboardAction.NavigateToLogin)
                 }
             }
             is DashboardEvent.OnUpdateStatus -> {
