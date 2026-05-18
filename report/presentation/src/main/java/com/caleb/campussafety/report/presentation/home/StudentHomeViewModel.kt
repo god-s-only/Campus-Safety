@@ -2,6 +2,7 @@ package com.caleb.campussafety.report.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.caleb.campussafety.auth.domain.usecase.LogoutUseCase
 import com.caleb.campussafety.report.domain.usecase.GetIncidentsUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StudentHomeViewModel @Inject constructor(
     private val getIncidentsUseCase: GetIncidentsUseCase,
+    private val logoutUseCase: LogoutUseCase,
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
@@ -71,6 +73,12 @@ class StudentHomeViewModel @Inject constructor(
             is StudentHomeEvent.OnViewHistoryClick -> {
                 viewModelScope.launch {
                     _actions.send(StudentHomeAction.NavigateToHistory)
+                }
+            }
+            is StudentHomeEvent.OnLogoutClick -> {
+                viewModelScope.launch {
+                    logoutUseCase()
+                    _actions.send(StudentHomeAction.NavigateToLogin)
                 }
             }
             is StudentHomeEvent.OnIncidentClick -> {
