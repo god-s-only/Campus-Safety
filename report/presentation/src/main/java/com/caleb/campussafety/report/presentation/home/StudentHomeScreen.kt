@@ -32,6 +32,7 @@ fun StudentHomeScreen(
     onEvent: (StudentHomeEvent) -> Unit,
     onNavigateToReport: () -> Unit,
     onNavigateToHistory: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onNavigateToIncidentDetail: (String) -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -39,6 +40,7 @@ fun StudentHomeScreen(
             when (action) {
                 is StudentHomeAction.NavigateToReport -> onNavigateToReport()
                 is StudentHomeAction.NavigateToHistory -> onNavigateToHistory()
+                is StudentHomeAction.NavigateToLogin -> onNavigateToLogin()
                 is StudentHomeAction.NavigateToIncidentDetail ->
                     onNavigateToIncidentDetail(action.incidentId)
             }
@@ -78,7 +80,15 @@ fun StudentHomeScreen(
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    IconButton(onClick = { onEvent(StudentHomeEvent.OnLogoutClick) }) {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
                 }
             )
         }
@@ -383,10 +393,4 @@ fun IncidentCard(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Default() {
-    StudentHomeScreen(StudentHomeState(), flowOf(), {}, {}, {}) { }
 }
