@@ -54,4 +54,5 @@ dependencies {
     implementation(project(":report:presentation"))
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
+    implementation(project(":auth:domain"))
 }
