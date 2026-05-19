@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -460,6 +461,21 @@ fun DashboardIncidentCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            IncidentMapView(
+                latitude = incident.location.latitude,
+                longitude = incident.location.longitude,
+                title = incident.category.name
+                    .replace("_", " ")
+                    .lowercase()
+                    .replaceFirstChar { it.uppercase() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
 
             // Action buttons
             if (incident.status != IncidentStatus.RESOLVED) {
