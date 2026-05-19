@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.caleb.campussafety.auth.domain.model.UserRole
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -218,43 +219,101 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Role selector hint
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f))
+                Text(
+                    text = "  sign in as  ",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f))
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                val isStudent = state.selectedRole == UserRole.STUDENT
+                val isSecurity = state.selectedRole == UserRole.SECURITY
+
                 OutlinedButton(
-                    onClick = {},
+                    onClick = { onEvent(LoginEvent.OnRoleChange(UserRole.STUDENT)) },
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (isStudent)
+                            MaterialTheme.colorScheme.primaryContainer
+                        else
+                            MaterialTheme.colorScheme.surface
+                    ),
+                    border = ButtonDefaults.outlinedButtonBorder.copy(
+                        width = if (isStudent) 2.dp else 1.dp
+                    )
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             Icons.Default.School,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
+                            tint = if (isStudent)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(2.dp))
-                        Text(text = "Student", fontSize = 12.sp)
+                        Text(
+                            text = "Student",
+                            fontSize = 12.sp,
+                            color = if (isStudent)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
+
                 OutlinedButton(
-                    onClick = {},
+                    onClick = { onEvent(LoginEvent.OnRoleChange(UserRole.SECURITY)) },
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (isSecurity)
+                            MaterialTheme.colorScheme.primaryContainer
+                        else
+                            MaterialTheme.colorScheme.surface
+                    ),
+                    border = ButtonDefaults.outlinedButtonBorder.copy(
+                        width = if (isSecurity) 2.dp else 1.dp
+                    )
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             Icons.Default.Shield,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
+                            tint = if (isSecurity)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(2.dp))
-                        Text(text = "Security", fontSize = 12.sp)
+                        Text(
+                            text = "Security",
+                            fontSize = 12.sp,
+                            color = if (isSecurity)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
