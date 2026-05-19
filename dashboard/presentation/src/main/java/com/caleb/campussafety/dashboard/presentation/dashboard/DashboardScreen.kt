@@ -1,5 +1,6 @@
 package com.caleb.campussafety.dashboard.presentation.dashboard
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -11,13 +12,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.caleb.campussafety.report.domain.model.Incident
 import com.caleb.campussafety.report.domain.model.IncidentCategory
 import com.caleb.campussafety.report.domain.model.IncidentStatus
 import kotlinx.coroutines.flow.Flow
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.config.Configuration
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -497,4 +505,44 @@ fun DashboardIncidentCard(
             }
         }
     }
+}
+
+
+@Composable
+fun IncidentMapView(
+    latitude: Double,
+    longitude: Double,
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+
+    val mapView = remember {
+        Configuration.getInstance().load(
+            context,
+            context.getSharedPreferences("osmdroid", Context.MODE_PRIVATE)
+        )
+        MapView(context).apply {
+            setTileSource(TileSourceFactory.MAPNIK)
+            setMultiTouchControls(true)
+            controller.setZoom(17.0)
+            controller.setCenter(GeoPoint(latitude, longitude))
+            val marker = Marker(this)
+            marker.position = GeoPoint(latitude, longitude)
+            marker.title = title
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            overlays.add(marker)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            mapView.onDetach()
+        }
+    }
+
+    AndroidView(
+        factory = { mapView },
+        modifier = modifier
+    )
 }
