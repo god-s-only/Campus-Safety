@@ -3,6 +3,7 @@ package com.caleb.campussafety.auth.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caleb.campussafety.auth.domain.model.AuthResult
+import com.caleb.campussafety.auth.domain.model.UserRole
 import com.caleb.campussafety.auth.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +33,9 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.OnPasswordChange -> {
                 _state.update { it.copy(password = event.password) }
             }
+            is LoginEvent.OnRoleChange -> {
+                _state.update { it.copy(selectedRole = event.role) }
+            }
             is LoginEvent.OnTogglePasswordVisibility -> {
                 _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
             }
@@ -47,11 +51,21 @@ class LoginViewModel @Inject constructor(
                 password = _state.value.password
             )) {
                 is AuthResult.Success -> {
+                    val actualRole = result.data.role
+                    val selectedRole = _state.value.selectedRole
+                    if (actualRole != selectedRole) {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = "Invalid credentials for selected role"
+                            )
+                        }
+                        return@launch
+                    }
                     _state.update { it.copy(isLoading = false) }
                     _actions.send(
                         LoginAction.NavigateToHome(
-                            isSecurityOfficer = result.data.role ==
-                                    com.caleb.campussafety.auth.domain.model.UserRole.SECURITY
+                            isSecurityOfficer = actualRole == UserRole.SECURITY
                         )
                     )
                 }
