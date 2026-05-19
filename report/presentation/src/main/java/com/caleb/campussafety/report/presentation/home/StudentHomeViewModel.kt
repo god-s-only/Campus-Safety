@@ -3,7 +3,7 @@ package com.caleb.campussafety.report.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caleb.campussafety.auth.domain.usecase.LogoutUseCase
-import com.caleb.campussafety.report.domain.usecase.GetIncidentsUseCase
+import com.caleb.campussafety.report.domain.usecase.GetMyIncidentsUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudentHomeViewModel @Inject constructor(
-    private val getIncidentsUseCase: GetIncidentsUseCase,
+    private val getMyIncidentsUseCase: GetMyIncidentsUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
@@ -41,9 +41,10 @@ class StudentHomeViewModel @Inject constructor(
     }
 
     private fun loadRecentIncidents() {
+        val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            getIncidentsUseCase()
+            getMyIncidentsUseCase(uid)
                 .catch { error ->
                     _state.update {
                         it.copy(
