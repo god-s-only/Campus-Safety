@@ -20,6 +20,7 @@ kotlinxSerializationJson = "1.8.1"
 ksp = "2.0.21-1.0.28"
 appcompat = "1.7.1"
 material = "1.14.0"
+osmdroid = "6.1.18"
 
 [libraries]
 # Core
@@ -84,6 +85,7 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+osmdroid = { group = "org.osmdroid", name = "osmdroid-android", version.ref = "osmdroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
