@@ -2,8 +2,10 @@ package com.caleb.campussafety.report.presentation.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.caleb.campussafety.report.domain.model.Incident
 import com.caleb.campussafety.report.domain.model.IncidentStatus
-import com.caleb.campussafety.report.domain.usecase.GetIncidentsUseCase
+import com.caleb.campussafety.report.domain.usecase.GetMyIncidentsUseCase
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val getIncidentsUseCase: GetIncidentsUseCase
+    private val getMyIncidentsUseCase: GetMyIncidentsUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryState())
@@ -30,9 +33,10 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun loadIncidents() {
+        val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            getIncidentsUseCase()
+            getMyIncidentsUseCase(uid)
                 .catch { error ->
                     _state.update {
                         it.copy(
@@ -98,7 +102,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun applyFilters(
-        incidents: List<com.caleb.campussafety.report.domain.model.Incident>,
+        incidents: List<Incident>,
         filter: IncidentStatus?,
         query: String
     ) = incidents
